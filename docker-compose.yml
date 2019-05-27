@@ -17,12 +17,14 @@ services:
       ports:
         - "3306:3306"
       volumes:
-        - ./mysql/data:/var/lib/mysql
+        - ./mysql/setup.sh:/docker-entrypoint-initdb.d/a.sh:ro
+        - ./mysql/setup.sql:/docker-entrypoint-initdb.d/b.sql:ro
       environment:
-        - MYSQL_ROOT_PASSWORD="r00tv573ch"
-        - MYSQL_DATABASE="vstech"
-        - MYSQL_USER="ldr"
-        - MYSQL_PASSWORD="ldr.pass"
+        - MYSQL_ROOT_PASSWORD=r00tv573ch
+        - MYSQL_DATABASE=vstech
+        - MYSQL_HOST=mysqlsrv
+        - MYSQL_USER=ldr
+        - MYSQL_PASSWORD=ldr.pass
       networks:
         - mysql-compose-network
     elasticsearch:

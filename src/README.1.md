@@ -4,32 +4,42 @@
 
 `cd vs-challenge`
 
-`docker-compose up -d`
+`docker-compose up -d` or `docker-compose up`
+
+## List containers
 
 `docker-compose ps`
 
-`docker exec -it vs-api-php-fpm bash`
+## Access container
 
-`composer install --no-dev`
+`docker exec -it vs-api-mysql bash`
 
-`php artisan key:generate`
-
-## Using
+## Access application
 
 `http://localhost:8888`
 
-To clear containers:
+## Do not forget
 
-docker rm -f $(docker ps -a -q)
+`composer install`
 
-To clear images:
+## Others commands
 
-docker rmi -f $(docker images -a -q)
+*Down and remove volumes*
 
-To clear volumes:
+`docker-compose down -v`
 
-docker volume rm $(docker volume ls -q)
+*To clear containers:*
 
-To clear networks:
+`docker rm -f $(docker ps -a -q)`
 
-docker network rm $(docker network ls | tail -n+2 | awk '{if($2 !~ /bridge|none|host/){ print $1 }}')
+*To clear images:*
+
+`docker rmi -f $(docker images -a -q)`
+
+*To clear volumes:*
+
+`docker volume rm $(docker volume ls -q)`
+
+*To clear networks:*
+
+`docker network rm $(docker network ls | tail -n+2 | awk '{if($2 !~ bridge|none|host/){ print $1 }}')`
