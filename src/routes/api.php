@@ -13,6 +13,27 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([
+    'middleware' => 'auth:api','prefix' => '1.0'
+], function ($router) {
+    Route::post('logout', 'AuthenticateController@logout');
+    Route::post('refresh', 'AuthenticateController@refresh');
+    Route::post('me', 'AuthenticateController@me');
+    Route::get('/products/search', 'ProductsController@search');
+});
+
+Route::group([
+    'prefix' => '1.0'
+], function () {
+    Route::get('/', function () {
+        return response()->json(
+            ['response' => [
+                'message' => 'VeuS API',
+                'status' => 'On',
+                'othersVersions' => array('/1.0')
+            ]],
+            200
+        );
+    });
+    Route::post('login', 'AuthenticateController@login');
 });
