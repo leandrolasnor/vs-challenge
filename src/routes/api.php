@@ -14,26 +14,26 @@ use Illuminate\Http\Request;
 */
 
 Route::group([
-    'middleware' => 'auth:api','prefix' => '1.0'
+    'middleware' => 'auth:api', 'prefix' => '1.0', 'name' => 'api.v1.'
 ], function ($router) {
-    Route::post('logout', 'AuthenticateController@logout');
-    Route::post('refresh', 'AuthenticateController@refresh');
-    Route::post('me', 'AuthenticateController@me');
-    Route::get('/products/search', 'ProductsController@search');
+    Route::post('logout', 'AuthenticateController@logout')->name('api.version1.0.LOGOUT');
+    Route::post('refresh', 'AuthenticateController@refresh')->name('api.version1.0.refreshToken');
+    Route::post('me', 'AuthenticateController@me')->name('api.version1.0.showUserLogged');
+    Route::get('/products/search', 'ProductsController@search')->name('api.version1.0.searchProducts');
 });
 
 Route::group([
-    'prefix' => '1.0'
+    'prefix' => '1.0', 'name' => 'api.v1.'
 ], function () {
     Route::get('/', function () {
         return response()->json(
             ['response' => [
                 'message' => 'VeuS API',
                 'status' => 'On',
-                'othersVersions' => array('/1.0')
+                'othersVersions' => ['/1.0']
             ]],
             200
         );
-    });
-    Route::post('login', 'AuthenticateController@login');
+    })->name('api.version.1.0.STATUS');
+    Route::post('login', 'AuthenticateController@login')->name('api.version1.0.LOGIN');
 });

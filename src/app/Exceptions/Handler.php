@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\QueryException as QueryException;
+use PDOException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -46,14 +49,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return response()->json(
-            [
-                'status' => 401,
-                'message' => 'Unauthenticated'
-            ],
-            401
-        );
-
-        //return parent::render($request, $exception);
+        if (in_array(get_class($exception), ['ErrorException', 'QueryException', 'PDOException', 'BadMethodCallException'])) {
+            return response()->json(
+                [
+                    'status' => 500,
+                    'message' => 'Internal Server Error'
+                ],
+                500
+            );
+        }
     }
 }
